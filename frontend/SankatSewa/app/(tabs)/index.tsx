@@ -30,7 +30,7 @@ interface ReportButtonProps {
   onPress: () => void;
 }
 
-// ─── Report Button ────────────────────────────────────────────────────────────
+//  Report Button
 const ReportButton: React.FC<ReportButtonProps> = ({ onPress }) => {
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
@@ -73,7 +73,7 @@ const handleCall = async (phoneNumber: string) => {
   }
 };
 
-// ─── Alert Card ───────────────────────────────────────────────────────────────
+// Alert Card 
 const AlertCard: React.FC<AlertCardProps> = ({
   icon,
   color,
@@ -96,7 +96,7 @@ const AlertCard: React.FC<AlertCardProps> = ({
   </View>
 );
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
+// Main Screen
 export default function HomeScreen(): React.JSX.Element {
   const router = useRouter();
   const [volunteerMode, setVolunteerMode] = useState<boolean>(true);
@@ -142,7 +142,6 @@ export default function HomeScreen(): React.JSX.Element {
           />
         </View>
 
-        {/* ── Emergency Section ── */}
         <View style={styles.emergencySection}>
           <Text style={styles.emergencyHeading}>Emergency?</Text>
           <ReportButton onPress={handleReportPress} />
@@ -150,7 +149,7 @@ export default function HomeScreen(): React.JSX.Element {
         </View>
 
 
-        {/* ── Active Alerts Near You ── */}
+        {/* Active Alerts Near You */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { marginBottom: 12 }]}>ACTIVE ALERTS NEAR YOU</Text>
           <AlertCard
@@ -171,7 +170,7 @@ export default function HomeScreen(): React.JSX.Element {
           />
         </View>
 
-        {/* ── Quick Actions ── */}
+        {/*Quick Actions*/}
         <View style={styles.quickActions}>
           <TouchableOpacity style={styles.quickBtn} onPress={() => handleCall('100')}>
             <Text style={styles.quickIcon}>📞</Text>
@@ -185,7 +184,7 @@ export default function HomeScreen(): React.JSX.Element {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+// Styles
 const styles = StyleSheet.create({
   root: {
     flex: 1,
