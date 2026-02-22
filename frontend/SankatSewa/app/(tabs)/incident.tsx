@@ -1,8 +1,10 @@
+import Header from '@/components/Header';
 import {StyleSheet, Text, View} from 'react-native';
 
 export default function Incident(){
     return(
         <View style={s.view}>
+            <Header />
             <View style={s.topBar}>
                 <Text style={s.text}>Sankat Sewa</Text>
                 <Text>Volunteer Portal</Text>

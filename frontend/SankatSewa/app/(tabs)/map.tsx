@@ -1,9 +1,11 @@
+import Header from '@/components/Header';
 import MapScreen from '@/components/Map';
 import { Text, View, StyleSheet } from 'react-native';
 
 export default function profile() {
   return (
     <View style={styles.container}>
+      <Header />
       <MapScreen />
     </View>
   );
