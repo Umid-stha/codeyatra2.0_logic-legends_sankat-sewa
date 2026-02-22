@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -7,6 +7,7 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 export default function TabLayout() {
   return (
     <View style={styles.container}>
+   <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#ffd33d',
@@ -38,6 +39,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+       name="incident"
+       options={{title:'Incidents',
+        tabBarIcon: ({color, focused}) =>(
+          <Ionicons name={focused ? 'alarm-sharp' : 'alarm-outline'} color={color} size={24}/>
+        )
+       }}/>
 
          <Tabs.Screen
         name="map"
@@ -56,8 +64,20 @@ export default function TabLayout() {
           <EvilIcons name="user" size={24} color="black" />          ),
         }}
       />
+             <Tabs.Screen
+        name="report"
+        options={{
+          title: 'Report',
+          tabBarIcon: ({ color, focused }) => (
+          <EvilIcons name="exclamation" size={24} color="white" />          ),
+        }}
+      />
+    
     </Tabs>
 </View>
+   
+   </>
+    
   );
 }
 
