@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         padding: 3,
     },
     button: {
+        backgroundColor:'red',
         borderRadius: 10,
         width: '100%',
         height: '100%',
