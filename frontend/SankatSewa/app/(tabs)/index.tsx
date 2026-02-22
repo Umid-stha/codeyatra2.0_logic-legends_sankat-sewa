@@ -7,23 +7,20 @@ const PlaceholderImage = require('@/assets/images/android-icon-background.png');
 export default function Index() {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageViewer imgSource={PlaceholderImage} />
-      </View>
-      <View style={styles.footerContainer}>
-        <Button label='Choose a photo' />
-        <Button label='Choose a photo' />
-      </View>
+    
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#25292e',
+    flex: 1/9,
+    backgroundColor: '#bebebe',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius:9,
+    borderColor: "red",
   },
   imageContainer: {
     flex: 1,
