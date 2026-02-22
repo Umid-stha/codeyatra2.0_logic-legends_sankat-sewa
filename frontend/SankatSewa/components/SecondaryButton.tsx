@@ -4,7 +4,7 @@ type Prop = {
     label: string;
 }
 
-export default function Button({label}: Prop) {
+export default function SecondaryButton({label}: Prop) {
     return (
         <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={() => alert('You Pressed a button')}>
@@ -24,18 +24,18 @@ const styles = StyleSheet.create({
         padding: 3,
     },
     button: {
-        backgroundColor:'#cc2424',
+        backgroundColor:'#ffffff',
         borderRadius: 10,
         width: '100%',
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-
+        borderWidth: 2,
+        borderColor: '#cc2424',
     },
     buttonLabel: {
-        color: '#fff',
+        color: '#cc2424',
         fontSize: 16,
     },
-    
 })
