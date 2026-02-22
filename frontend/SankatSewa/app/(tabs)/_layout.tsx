@@ -53,6 +53,14 @@ export default function TabLayout() {
           <EvilIcons name="user" size={24} color="black" />          ),
         }}
       />
+             <Tabs.Screen
+        name="report"
+        options={{
+          title: 'Report',
+          tabBarIcon: ({ color, focused }) => (
+          <EvilIcons name="exclamation" size={24} color="white" />          ),
+        }}
+      />
     </Tabs>
   );
 }
