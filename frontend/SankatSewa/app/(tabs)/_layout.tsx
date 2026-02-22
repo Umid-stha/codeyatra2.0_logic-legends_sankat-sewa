@@ -9,14 +9,9 @@ export default function TabLayout() {
     <View style={styles.container}>
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#ffd33d',
-        headerStyle: {
-            backgroundColor: '#25292e',
-        },
-        headerShadowVisible: false,
-        headerTintColor: '#fff',
+        tabBarActiveTintColor: '#E53959',
         tabBarStyle: {
-            backgroundColor: '#25292e'
+            backgroundColor: '#FFFFFF'
         ,}
       }}
     >
@@ -24,6 +19,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
           ),
