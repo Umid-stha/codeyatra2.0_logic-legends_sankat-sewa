@@ -7,6 +7,8 @@ class Incident(models.Model):
     reported_by = models.ForeignKey(User, related_name='incidents', on_delete=models.CASCADE)
     incident_type = models.CharField(max_length=255)
     #implement a location for geo location
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     incident_severity = models.IntegerField(default=0)
     accepted_by = models.ManyToManyField(User, blank=True)
     max_volunteer_count = models.IntegerField(default=1)

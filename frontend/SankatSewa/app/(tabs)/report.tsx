@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import OtherIncidentModal from '@/components/OtherIncidentsModal';
+import Header from '@/components/Header';
 
 //  Types of incidents user is able to report
 type IncidentId = 'accident' | 'fire' | 'flood' | 'landslide' | 'medical' | 'other';
@@ -141,10 +142,7 @@ const EmergencyReportScreen: React.FC<EmergencyReportScreenProps> = ({ navigatio
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      {/*  Top Bar  */}
-      <View style={styles.topBar}>
-        <Text style={styles.topBarTitle}>EMERGENCY REPORT</Text>
-      </View>
+<Header />
 
       {/* GPS Badge  */}
       <View style={styles.gpsBadgeRow}>
