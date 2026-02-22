@@ -36,6 +36,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+       name="incident"
+       options={{title:'Incidents',
+        tabBarIcon: ({color, focused}) =>(
+          <Ionicons name={focused ? 'alarm-sharp' : 'alarm-outline'} color={color} size={24}/>
+        )
+       }}/>
 
          <Tabs.Screen
         name="map"
