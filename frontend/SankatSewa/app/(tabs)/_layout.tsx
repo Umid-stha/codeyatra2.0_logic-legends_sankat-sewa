@@ -7,7 +7,6 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 export default function TabLayout() {
   return (
     <View style={styles.container}>
-   <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#ffd33d',
@@ -76,7 +75,6 @@ export default function TabLayout() {
     </Tabs>
 </View>
    
-   </>
     
   );
 }
