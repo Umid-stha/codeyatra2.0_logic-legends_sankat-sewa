@@ -1,9 +1,10 @@
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 export default function TabLayout() {
   return (
+   <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#ffd33d',
@@ -53,6 +54,10 @@ export default function TabLayout() {
           <EvilIcons name="user" size={24} color="black" />          ),
         }}
       />
+    
     </Tabs>
+   
+   </>
+    
   );
 }
