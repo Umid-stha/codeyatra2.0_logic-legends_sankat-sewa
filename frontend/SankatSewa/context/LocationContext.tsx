@@ -8,7 +8,6 @@ interface Coordinates {
 
 interface Address {
     city?: string;
-    region?: string;
     country?: string;
     street?: string;
 }
@@ -52,7 +51,6 @@ export const LocationProvider = ({ children }: { children: React.ReactNode }) =>
             if (geocode.length > 0) {
                 setAddress({
                     city: geocode[0].city || undefined,
-                    region: geocode[0].region || undefined,
                     country: geocode[0].country || undefined,
                     street: geocode[0].street || undefined,
                 });

@@ -1,15 +1,20 @@
-import {View, Text, StyleSheet, Platform} from 'react-native'
+import { useLocation } from '@/context/LocationContext'
+import {View, Text, Image, StyleSheet, Platform} from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+const Logo = require('@/assets/images/logo.png')
 
 export default function Header() {
+    const {address} = useLocation()
     return (
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <View style={styles.logo}>
-            <Text style={styles.logoIcon}>🛡</Text>
+          <View>
+            <Image source={Logo} style={{width:40, height: 40}}/>
           </View>
           <View>
-            <Text style={styles.appName}>SANKAT SEWA</Text>
-            <Text style={styles.location}>📍 Downtown, New Delhi</Text>
+            <Text style={styles.appName}>Sankat <Text style={{color: '#E53935'}}>Sewa</Text></Text>
+            <Text style={styles.location}><Ionicons name='location' />{address?.street}, {address?.city}, {address?.country}</Text>
           </View>
         </View>
       </View>
@@ -46,8 +51,8 @@ const styles = StyleSheet.create({
   },
   logoIcon: { fontSize: 20 },
   appName: {
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: 16,
+    fontWeight: '900',
     color: '#1A1A2E',
     letterSpacing: 1,
   },

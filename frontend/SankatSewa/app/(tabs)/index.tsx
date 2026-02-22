@@ -8,18 +8,14 @@ import {
   Switch,
   Animated,
   StatusBar,
+  Image,
+  Linking,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface StatusCardProps {
-  icon: string;
-  title: string;
-  time: string;
-  badge?: string;
-  description: string;
-}
+const TrustHandImage = require('@/assets/images/Trust-Icon.png');
 
 interface AlertCardProps {
   icon: string;
@@ -33,29 +29,6 @@ interface AlertCardProps {
 interface ReportButtonProps {
   onPress: () => void;
 }
-
-// ─── Mock Map Placeholder ─────────────────────────────────────────────────────
-const MapPlaceholder: React.FC = () => (
-  <View style={styles.mapContainer}>
-    {[...Array(6)].map((_, i) => (
-      <View key={`h${i}`} style={[styles.mapGridH, { top: i * 22 }]} />
-    ))}
-    {[...Array(8)].map((_, i) => (
-      <View key={`v${i}`} style={[styles.mapGridV, { left: i * 48 }]} />
-    ))}
-    <View style={[styles.mapPin, { top: 30, left: 120, backgroundColor: '#E53935' }]}>
-      <Text style={styles.mapPinText}>📍</Text>
-    </View>
-    <View style={[styles.mapPin, { top: 55, left: 60 }]}>
-      <Text style={styles.mapPinText}>📍</Text>
-    </View>
-    <View style={[styles.mapPin, { top: 20, left: 220 }]}>
-      <Text style={styles.mapPinText}>📍</Text>
-    </View>
-    <View style={styles.mapAlertRing} />
-    <View style={styles.mapAlertDot} />
-  </View>
-);
 
 // ─── Report Button ────────────────────────────────────────────────────────────
 const ReportButton: React.FC<ReportButtonProps> = ({ onPress }) => {
@@ -87,26 +60,18 @@ const ReportButton: React.FC<ReportButtonProps> = ({ onPress }) => {
   );
 };
 
-// ─── Status Update Card ───────────────────────────────────────────────────────
-const StatusCard: React.FC<StatusCardProps> = ({ icon, title, time, badge, description }) => (
-  <View style={styles.statusCard}>
-    <View style={styles.statusIconBox}>
-      <Text style={styles.statusIcon}>{icon}</Text>
-    </View>
-    <View style={styles.statusContent}>
-      <View style={styles.statusRow}>
-        <Text style={styles.statusTitle}>{title}</Text>
-        <Text style={styles.statusTime}>{time}</Text>
-      </View>
-      {badge && (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>✓ {badge}</Text>
-        </View>
-      )}
-      <Text style={styles.statusDesc}>{description}</Text>
-    </View>
-  </View>
-);
+//Redirect to caller app
+const handleCall = async (phoneNumber: string) => {
+  const url = `tel:${phoneNumber}`;
+
+  const supported = await Linking.canOpenURL(url);
+
+  if (supported) {
+    await Linking.openURL(url);
+  } else {
+    Alert.alert("Error", "Calling is not supported on this device");
+  }
+};
 
 // ─── Alert Card ───────────────────────────────────────────────────────────────
 const AlertCard: React.FC<AlertCardProps> = ({
@@ -162,7 +127,7 @@ export default function HomeScreen(): React.JSX.Element {
         <View style={styles.volunteerBanner}>
           <View style={styles.volunteerLeft}>
             <View style={styles.volunteerAvatarBox}>
-              <Text style={styles.volunteerEmoji}>🤝</Text>
+              <Image source={TrustHandImage} style={{width: 20, height: 20}} />
             </View>
             <View>
               <Text style={styles.volunteerTitle}>Volunteer Mode</Text>
@@ -184,32 +149,10 @@ export default function HomeScreen(): React.JSX.Element {
           <Text style={styles.tapHint}>Tap to report an incident</Text>
         </View>
 
-        {/* ── Live Status Updates ── */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>LIVE STATUS UPDATES</Text>
-            <Animated.View style={[styles.liveDot, { opacity: dotAnim }]} />
-          </View>
-          <StatusCard
-            icon="🏥"
-            title="Medical Emergency #492"
-            time="2m ago"
-            badge="OFFICIAL DISPATCH"
-            description="Ambulance dispatched to sector 14."
-          />
-          <View style={styles.divider} />
-          <StatusCard
-            icon="🔥"
-            title="Fire Alert Resolved"
-            time="8h ago"
-            description="Fire controlled at Connaught Place commercial block."
-          />
-        </View>
 
         {/* ── Active Alerts Near You ── */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { marginBottom: 12 }]}>ACTIVE ALERTS NEAR YOU</Text>
-          <MapPlaceholder />
           <AlertCard
             icon="⚠️"
             color="#E53935"
@@ -230,13 +173,9 @@ export default function HomeScreen(): React.JSX.Element {
 
         {/* ── Quick Actions ── */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.quickBtn}>
+          <TouchableOpacity style={styles.quickBtn} onPress={() => handleCall('100')}>
             <Text style={styles.quickIcon}>📞</Text>
             <Text style={styles.quickLabel}>Police & Fire</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quickBtn}>
-            <Text style={styles.quickIcon}>📖</Text>
-            <Text style={styles.quickLabel}>First Aid Guide</Text>
           </TouchableOpacity>
         </View>
 
@@ -284,7 +223,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  volunteerEmoji: { fontSize: 22 },
   volunteerTitle: { fontSize: 14, fontWeight: '700', color: '#1A1A2E' },
   volunteerSub: { fontSize: 11, color: '#999', marginTop: 2 },
 
@@ -394,90 +332,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#F2F2F2',
     marginVertical: 12,
-  },
-
-  // Status Card
-  statusCard: { flexDirection: 'row', gap: 12 },
-  statusIconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: '#F5F5F5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  statusIcon: { fontSize: 20 },
-  statusContent: { flex: 1 },
-  statusRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statusTitle: { fontSize: 13, fontWeight: '700', color: '#1A1A2E', flex: 1 },
-  statusTime: { fontSize: 11, color: '#aaa', marginLeft: 8 },
-  badge: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#E8F5E9',
-    borderRadius: 5,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    marginTop: 5,
-  },
-  badgeText: { fontSize: 10, fontWeight: '700', color: '#388E3C' },
-  statusDesc: { fontSize: 12, color: '#888', marginTop: 5, lineHeight: 17 },
-
-  // Map
-  mapContainer: {
-    height: 120,
-    backgroundColor: '#E8EAED',
-    borderRadius: 12,
-    marginBottom: 14,
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  mapGridH: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 1,
-    backgroundColor: '#D0D3D8',
-  },
-  mapGridV: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: 1,
-    backgroundColor: '#D0D3D8',
-  },
-  mapPin: {
-    position: 'absolute',
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#9E9E9E',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mapPinText: { fontSize: 12 },
-  mapAlertRing: {
-    position: 'absolute',
-    top: 18,
-    left: 108,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 2,
-    borderColor: '#E5393560',
-  },
-  mapAlertDot: {
-    position: 'absolute',
-    top: 31,
-    left: 121,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: '#E53935',
   },
 
   // Alert Card
