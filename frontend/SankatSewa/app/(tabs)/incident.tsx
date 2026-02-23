@@ -9,13 +9,13 @@ import {
   Animated,
   StatusBar,
 } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+//  Types 
 type StatusType = 'enroute' | 'onsite' | 'resolved';
 
 interface NearbyIncident {
   id: string;
-  icon: string;
   iconBg: string;
   title: string;
   location: string;
@@ -23,7 +23,7 @@ interface NearbyIncident {
   reportedAgo: string;
 }
 
-// ─── Mock Map ─────────────────────────────────────────────────────────────────
+//  Mock Map 
 const MiniMap: React.FC = () => (
   <View style={styles.miniMap}>
     {[...Array(5)].map((_, i) => (
@@ -48,7 +48,7 @@ const MiniMap: React.FC = () => (
   </View>
 );
 
-// ─── Status Stepper ───────────────────────────────────────────────────────────
+//  Status Stepper 
 interface StatusStepperProps {
   status: StatusType;
   onStatusChange: (s: StatusType) => void;
@@ -85,7 +85,7 @@ const StatusStepper: React.FC<StatusStepperProps> = ({ status, onStatusChange })
   );
 };
 
-// ─── Nearby Incident Card ─────────────────────────────────────────────────────
+//  Nearby Incident Card 
 interface NearbyCardProps {
   incident: NearbyIncident;
   onAccept: (id: string) => void;
@@ -106,7 +106,11 @@ const NearbyCard: React.FC<NearbyCardProps> = ({ incident, onAccept, onDecline }
     <Animated.View style={[styles.nearbyCard, { transform: [{ scale: scaleAnim }] }]}>
       <View style={styles.nearbyCardTop}>
         <View style={[styles.nearbyIcon, { backgroundColor: incident.iconBg }]}>
-          <Text style={styles.nearbyIconText}>{incident.icon}</Text>
+                <MaterialCommunityIcons
+                  name='alert-circle-outline'
+                  size={34}
+                  color={'#E53935'}
+                  />
         </View>
         <View style={styles.nearbyInfo}>
           <Text style={styles.nearbyTitle}>{incident.title}</Text>
@@ -134,11 +138,10 @@ const NearbyCard: React.FC<NearbyCardProps> = ({ incident, onAccept, onDecline }
   );
 };
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
+//  Main Screen 
 const NEARBY_INCIDENTS: NearbyIncident[] = [
   {
     id: '1',
-    icon: '🔥',
     iconBg: '#FFF0E6',
     title: 'Fire Reported',
     location: 'Commercial Complex, Block B',
@@ -147,18 +150,16 @@ const NEARBY_INCIDENTS: NearbyIncident[] = [
   },
   {
     id: '2',
-    icon: '💧',
     iconBg: '#E6F0FF',
-    title: 'Water Leakage',
+    title: 'Flood',
     location: 'Residential Area, Lane 7',
     distance: '2.8 km',
     reportedAgo: 'Reported 15m ago',
   },
   {
     id: '3',
-    icon: '🚧',
     iconBg: '#F5F0FF',
-    title: 'Road Blockage',
+    title: 'landslides',
     location: 'Old Highway Crossing',
     distance: '4.5 km',
     reportedAgo: 'Reported 22m ago',
@@ -285,7 +286,7 @@ export default function VolunteerDashboard(): React.JSX.Element {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+//  Styles 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#F7F8FA' },
   scroll: { paddingHorizontal: 16, paddingTop: 14 },
