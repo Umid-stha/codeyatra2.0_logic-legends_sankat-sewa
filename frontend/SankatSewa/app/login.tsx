@@ -1,16 +1,21 @@
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import Button from '@/components/Button';
+import Header from '@/components/Header';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 export default function Login(){
     return(
+        <>
+            <Header />
         <View style={styles.container}>
             <View style={styles.form}>
                 <Text style={styles.label}>Username</Text>
                 <TextInput style={styles.input}/>
                 <Text style={styles.label}>Password</Text>
                 <TextInput style={styles.input} secureTextEntry/>
-                <Button title="Login" onPress={() => {}} />
+                <Button label='Login' />
             </View>
         </View>
+</>
     );
 }
 
