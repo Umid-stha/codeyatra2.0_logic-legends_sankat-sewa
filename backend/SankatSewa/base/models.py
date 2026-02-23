@@ -13,12 +13,12 @@ class Incident(models.Model):
     accepted_by = models.ManyToManyField(User, blank=True)
     max_volunteer_count = models.IntegerField(default=1)
 
-    created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 #Image model with incident relation for multi image support
 class IncidentImages(models.Model):
-    incident = models.ForeignKey(Incident, related_name='images')
+    incident = models.ForeignKey(Incident, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     

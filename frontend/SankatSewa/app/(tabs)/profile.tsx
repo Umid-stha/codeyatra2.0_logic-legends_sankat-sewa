@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import { Link } from 'expo-router';
 import { Text, View, StyleSheet } from 'react-native';
 
 export default function profile() {
@@ -6,6 +7,7 @@ export default function profile() {
     <View style={styles.container}>
       <Header />
       <Text style={styles.text}>Profile </Text>
+    <Link href='/login'>Login</Link>
     </View>
   );
 }
