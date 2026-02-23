@@ -14,11 +14,13 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Header from '@/components/Header';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+
 
 const TrustHandImage = require('@/assets/images/Trust-Icon.png');
 
 interface AlertCardProps {
-  icon: string;
   color: string;
   title: string;
   distance: string;
@@ -75,7 +77,6 @@ const handleCall = async (phoneNumber: string) => {
 
 // Alert Card 
 const AlertCard: React.FC<AlertCardProps> = ({
-  icon,
   color,
   title,
   distance,
@@ -84,7 +85,11 @@ const AlertCard: React.FC<AlertCardProps> = ({
 }) => (
   <View style={styles.alertCard}>
     <View style={[styles.alertIconBox, { backgroundColor: `${color}18` }]}>
-      <Text style={styles.alertIconText}>{icon}</Text>
+      <MaterialCommunityIcons
+                          name='alert-circle-outline'
+                          size={34}
+                          color='#E53935'
+                        />
     </View>
     <View style={styles.alertContent}>
       <Text style={styles.alertTitle}>{title}</Text>
@@ -153,7 +158,6 @@ export default function HomeScreen(): React.JSX.Element {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { marginBottom: 12 }]}>ACTIVE ALERTS NEAR YOU</Text>
           <AlertCard
-            icon="⚠️"
             color="#E53935"
             title="Road Accident"
             distance="450m"
@@ -162,7 +166,6 @@ export default function HomeScreen(): React.JSX.Element {
           />
           <View style={styles.divider} />
           <AlertCard
-            icon="🌊"
             color="#F57C00"
             title="Flood Warning"
             distance="1.2km"
