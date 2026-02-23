@@ -1,13 +1,16 @@
 import { LocationProvider } from '@/context/LocationContext';
-import { Stack } from 'expo-router';
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { Stack, Redirect, Slot } from 'expo-router';
 
 export default function RootLayout() {
   return (
-    <LocationProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
-      </Stack>
-    </LocationProvider>
+    <AuthProvider>
+      <LocationProvider>
+        <Stack>
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+      </LocationProvider>
+    </AuthProvider>
   );
 }
