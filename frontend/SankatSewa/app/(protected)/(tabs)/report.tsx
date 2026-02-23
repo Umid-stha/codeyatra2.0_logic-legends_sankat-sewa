@@ -17,6 +17,7 @@ import OtherIncidentModal from '@/components/OtherIncidentsModal';
 import Header from '@/components/Header';
 import { useLocation } from '@/context/LocationContext';
 import LocationPicker from '@/components/LocationPicker';
+import useAxiosPrivate from '@/api/useAxiosPrivate';
 
 //  Types of incidents user is able to report
 type IncidentId = 'accident' | 'fire' | 'flood' | 'landslide' | 'medical' | 'other';
@@ -40,7 +41,7 @@ const LIGHT_RED_BG = '#FFF5F5';
 const BORDER = '#E8E8E8';
 
 const INCIDENT_TYPES: IncidentType[] = [
-  { id: 'accident', label: 'Accident', icon: 'car-crash' },
+  { id: 'accident', label: 'Accident', icon: 'car' },
   { id: 'fire', label: 'Fire', icon: 'fire' },
   { id: 'flood', label: 'Flood', icon: 'home-flood' },
   { id: 'landslide', label: 'Landslide', icon: 'landslide' },
@@ -103,17 +104,20 @@ const MapPlaceholder: React.FC = () => (
 
 const EmergencyReportScreen: React.FC<EmergencyReportScreenProps> = ({ navigation }) => {
   const { location, address } = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   const [selectedType, setSelectedType] = useState<IncidentId>('fire');
   const [otherModalVisible, setOtherModalVisible] = useState<boolean>(false);
-  const [incidentType, setIncidentType] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
 
+  //formdata
+  const [incidentType, setIncidentType] = useState<string>('');
   const [severity, setSeverity] = useState<number>(5);
-  const [latitude, setLatitude] = useState<number | undefined>()
-  const [longitude, setLongitude] = useState<number | undefined>()
+  const [maxVolunteers, setMaxVolunteers] = useState<number>(3);
+  const [latitude, setLatitude] = useState<number | undefined>(location?.latitude)
+  const [longitude, setLongitude] = useState<number | undefined>(location?.longitude)
   const [selectedAddress, setSelectedAddress] = useState<string | undefined>(`${address?.street}, ${address?.city}, ${address?.country}`)
+  const [description, setDescription] = useState<string>('');
 
   const [locationModal, setLocationModal] = useState(false)
 
@@ -145,6 +149,21 @@ const EmergencyReportScreen: React.FC<EmergencyReportScreenProps> = ({ navigatio
       Alert.alert('Select Incident Type', 'Please select what is happening.');
       return;
     }
+    const formdata = new FormData();
+
+    //append states to form data
+    formdata.append('incident_type', incidentType)
+    formdata.append('description', description)
+    formdata.append('latitude', latitude?.toString() || '')
+    formdata.append('longitude', longitude?.toString() || '')
+    formdata.append('address', selectedAddress || '')
+    formdata.append('incident_severity', severity.toString())
+    formdata.append('max_volunteer_count', maxVolunteers.toString())
+
+    formdata.forEach(element => {
+      Alert.alert(element.toString())
+    });
+
     Alert.alert(
       '🚨 Report Submitted' + incidentType,
       'Authorities and nearby volunteers have been alerted. Stay safe!',
@@ -236,6 +255,29 @@ const EmergencyReportScreen: React.FC<EmergencyReportScreenProps> = ({ navigatio
             </View>
           </View>
 
+          {/* Max Volunteer Count */}
+          <SectionLabel text="Max Volunteers Needed" />
+          <View style={styles.volunteerContainer}>
+            <TouchableOpacity
+              style={styles.volunteerButton}
+              onPress={() => setMaxVolunteers(Math.max(1, maxVolunteers - 1))}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="remove" size={20} color={RED} />
+            </TouchableOpacity>
+            <View style={styles.volunteerDisplayBox}>
+              <Text style={styles.volunteerCount}>{maxVolunteers}</Text>
+              <Text style={styles.volunteerLabel}>Volunteers</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.volunteerButton}
+              onPress={() => setMaxVolunteers(Math.min(20, maxVolunteers + 1))}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="add" size={20} color={RED} />
+            </TouchableOpacity>
+          </View>
+
           {/*Incident reported is displayed in MAP*/}
           <View style={styles.sectionHeaderRow}>
             <SectionLabel text="Where is it?" inline />
@@ -294,7 +336,7 @@ const EmergencyReportScreen: React.FC<EmergencyReportScreenProps> = ({ navigatio
           {/* Submit Button  */}
           <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} activeOpacity={0.85}>
             <Text style={styles.submitBtnTitle}>SUBMIT REPORT</Text>
-            <Text style={styles.submitBtnSub}>ALERT AUTHORITIES IMMEDIATELY</Text>
+            <Text style={styles.submitBtnSub}>ALERT VOLUNTEERS IMMEDIATELY</Text>
           </TouchableOpacity>
 
           <View style={{ height: 20 }} />
@@ -613,6 +655,45 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     color: '#666',
+    letterSpacing: 0.3,
+  },
+
+  // Max Volunteer Count
+  volunteerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 20,
+  },
+  volunteerButton: {
+    width: 44,
+    height: 44,
+    borderWidth: 1.5,
+    borderColor: RED,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: LIGHT_RED_BG,
+  },
+  volunteerDisplayBox: {
+    flex: 1,
+    borderWidth: 1.5,
+    borderColor: BORDER,
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    backgroundColor: '#FAFAFA',
+  },
+  volunteerCount: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: RED,
+  },
+  volunteerLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#888',
+    marginTop: 2,
     letterSpacing: 0.3,
   },
 });
