@@ -17,7 +17,11 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=0, cast=bool) 
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS").split()
+
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = config("ALLOWED_HOSTS").split()
 
 SITE_ID = 1
 
@@ -45,16 +49,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # <-- default
-    ],
     'DEFAULT_PAGINATION_CLASS': CustomPagination
 }
 
 REST_AUTH = {
     'USE_JWT' : True,
     'JWT_AUTH_REFRESH_COOKIE': 'jwt-refresh', # Name of the cookie for the refresh token
-    'JWT_AUTH_HTTPONLY': True, # Set to True to make the cookies HttpOnly
+    'JWT_AUTH_HTTPONLY': False, # Set to False to return refresh token
     'JWT_AUTH_SAMESITE': 'Lax', # Optional: Set SameSite attribute for cookies
     # 'USER_DETAILS_SERIALIZER': 'useraccount.serializers.CustomUserDetailsSerializer', Use incase any new fields added to user model
     'JWT_AUTH_SECURE': False,
@@ -63,8 +64,9 @@ REST_AUTH = {
 #CORS Config
 CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS").split()
-CORS_TRUSTED_ORIGINS= ['http://localhost:5173', 'http://192.168.1.99:5173/' ]
+# CORS_TRUSTED_ORIGINS= ['http://localhost:5173', 'http://192.168.1.99:5173/' ]
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Application definition
 
@@ -88,7 +90,8 @@ INSTALLED_APPS = [
     
     'corsheaders',
 
-    'useraccount'
+    'useraccount',
+    'base'
 ]
 
 MIDDLEWARE = [
@@ -96,7 +99,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'core.middleware.DisableCSRFMiddleware',  # Disable CSRF protection middleware
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
