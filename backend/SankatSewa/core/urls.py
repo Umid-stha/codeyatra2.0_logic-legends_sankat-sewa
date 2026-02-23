@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from django.conf.urls import static
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('useraccount.urls')),
+    path('api/', include('base.urls'))
 ]
 
 if settings.DEBUG:
